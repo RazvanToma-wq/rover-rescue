@@ -1,6 +1,6 @@
 import type { BiomeMap } from "./types";
 
-const API = "http://127.0.0.1:8000";
+const API = "https://rover-rescue-backend.onrender.com";
 
 async function readError(res: Response) {
   const text = await res.text().catch(() => "");
@@ -28,7 +28,7 @@ export async function fetchRoute(
       start,
       goal,
       costs,
-      allow_water: allowWater, // ✅ IMPORTANT
+      allow_water: allowWater,
     }),
   });
 
