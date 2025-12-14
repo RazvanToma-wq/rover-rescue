@@ -4,7 +4,6 @@ from app.models.map import MapData
 def generate_map(width: int, height: int) -> MapData:
     terrain = [[0 for _ in range(width)] for _ in range(height)]
 
-    # Step 1: base noise
     for y in range(height):
         for x in range(width):
             r = random.random()
@@ -15,8 +14,7 @@ def generate_map(width: int, height: int) -> MapData:
             else:
                 terrain[y][x] = 3  # rock
 
-    # Step 2: add water blobs
-    for _ in range(12):  # number of lakes
+    for _ in range(12): 
         cx = random.randint(0, width - 1)
         cy = random.randint(0, height - 1)
         radius = random.randint(6, 14)
@@ -26,7 +24,6 @@ def generate_map(width: int, height: int) -> MapData:
                 if (x - cx) ** 2 + (y - cy) ** 2 < radius ** 2:
                     terrain[y][x] = 2  # water
 
-    # Step 3: smooth edges
     def neighbors(x, y):
         for dy in (-1, 0, 1):
             for dx in (-1, 0, 1):
@@ -34,7 +31,7 @@ def generate_map(width: int, height: int) -> MapData:
                 if 0 <= nx < width and 0 <= ny < height:
                     yield terrain[ny][nx]
 
-    for _ in range(2):  # smoothing passes
+    for _ in range(2):  
         new = [[terrain[y][x] for x in range(width)] for y in range(height)]
         for y in range(height):
             for x in range(width):

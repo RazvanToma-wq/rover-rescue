@@ -11,10 +11,7 @@ export function setTopOffset(px: number) {
   canvas.style.transform = "translateX(-50%)";
 }
 
-/**
- * Canvas fits the FULL map inside the viewport.
- * No zoom-in. Aspect ratio preserved.
- */
+
 export function resizeCanvasToMap(mapWidth: number, mapHeight: number) {
   const dpr = window.devicePixelRatio || 1;
 

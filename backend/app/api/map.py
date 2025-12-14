@@ -4,18 +4,12 @@ import math
 
 router = APIRouter()
 
-# Biome IDs (frontend-friendly)
 WATER = 0
 SAND = 1
 GRASS = 2
 HILL = 3
 MOUNTAIN = 4
 SNOW = 5
-
-
-# -------------------------------------------------
-# Fast deterministic hash noise
-# -------------------------------------------------
 
 def _hash2i(ix: int, iy: int, seed: int) -> float:
     n = ix * 374761393 + iy * 668265263 + seed * 1442695041
@@ -80,17 +74,10 @@ def smooth_range(edge0: float, edge1: float, x: float) -> float:
     return _smoothstep(t)
 
 
-# -------------------------------------------------
-# Hill mask (creates hill-only regions)
-# -------------------------------------------------
 
 def hill_mask(nx: float, ny: float, seed: int) -> float:
     return fbm(nx * 0.9, ny * 0.9, seed + 999, octaves=2)
 
-
-# -------------------------------------------------
-# TerraForge-style height
-# -------------------------------------------------
 
 def terraforge_height(nx: float, ny: float, seed: int) -> float:
     wx = nx + (fbm(nx * 2.0, ny * 2.0, seed + 101, 2) - 0.5) * 0.30
@@ -122,17 +109,12 @@ def terraforge_height(nx: float, ny: float, seed: int) -> float:
     return max(0.0, min(1.0, cont * land))
 
 
-# -------------------------------------------------
-# FAST MAP GENERATION (CACHED + SAMPLED)
-# -------------------------------------------------
-
 _MAP_CACHE = {}
 @router.get("/map/generate")
 def generate_map(width: int =1600, height: int = 900, seed: int | None = None):
     if seed is None:
         seed = random.randint(0, 10_000_000)
 
-    # Hard clamp to prevent accidental huge requests
     width = max(32, min(width, 600))
     height = max(32, min(height, 600))
 
@@ -140,9 +122,7 @@ def generate_map(width: int =1600, height: int = 900, seed: int | None = None):
     if cache_key in _MAP_CACHE:
         return _MAP_CACHE[cache_key]
 
-    # ---- COARSE PASS (speed) ----
-    # Generate at lower resolution, then upscale to requested size.
-    step = max(1, min(width, height) // 140)  # ~140x140 work budget
+    step = max(1, min(width, height) // 140)  
     cw = (width + step - 1) // step
     ch = (height + step - 1) // step
 
@@ -152,7 +132,6 @@ def generate_map(width: int =1600, height: int = 900, seed: int | None = None):
 
     total = cw * ch
 
-    # ---- TARGET RATIOS (same as your intent) ----
     WATER_RATIO = 0.25
     GRASS_RATIO = 0.40
     HILL_RATIO_OF_GRASS = 0.15
@@ -160,7 +139,7 @@ def generate_map(width: int =1600, height: int = 900, seed: int | None = None):
     MOUNTAIN_RATIO = HILL_RATIO * 0.35
     SNOW_RATIO = MOUNTAIN_RATIO * 0.15
 
-    # ---- SAMPLE HEIGHTS (on coarse grid) ----
+   
     sampled_land = []
     for y in range(ch):
         ny = y * inv_h
@@ -211,7 +190,7 @@ def generate_map(width: int =1600, height: int = 900, seed: int | None = None):
 
             row[x] = b
 
-    # ---- UPSCALE (nearest neighbor) ----
+
     biome_map = [[WATER] * width for _ in range(height)]
     for y in range(height):
         cy = min(ch - 1, y // step)

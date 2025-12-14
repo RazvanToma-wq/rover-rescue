@@ -13,7 +13,7 @@ const COLORS: Record<number, string> = {
 
 function drawCross(cx: number, cy: number, size: number, color: string) {
   ctx.strokeStyle = color;
-  ctx.lineWidth = Math.max(4, size * 0.25); // 🔥 thicker lines
+  ctx.lineWidth = Math.max(4, size * 0.25);
   ctx.beginPath();
   ctx.moveTo(cx - size, cy - size);
   ctx.lineTo(cx + size, cy + size);

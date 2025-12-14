@@ -1,6 +1,8 @@
 import type { BiomeMap } from "./types";
 
-const API = "https://rover-rescue-backend.onrender.com";
+const API = import.meta.env.DEV
+  ? "http://127.0.0.1:8000"
+  : "https://rover-rescue-backend.onrender.com";
 
 async function readError(res: Response) {
   const text = await res.text().catch(() => "");

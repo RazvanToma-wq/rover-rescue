@@ -21,7 +21,6 @@ class MissionRequest(BaseModel):
     start: Tuple[int, int]
     goal: Tuple[int, int]
 
-    # 👇 must be sent by frontend
     allow_water: bool = False
 
     costs: Dict[Any, Any] = Field(default_factory=dict)
@@ -67,9 +66,6 @@ class MissionRequest(BaseModel):
 def compute_route(data: MissionRequest):
     costs = dict(data.costs)
 
-    # ✅ EXACT behavior you want:
-    # - if allow_water is OFF => block water completely
-    # - if allow_water is ON  => water cost = 1
     if data.allow_water:
         costs[0] = 1.0
     else:

@@ -72,7 +72,7 @@ export function createPlacementControls(opts: {
     clearPlacement();
   });
 
-  // ✅ Calculate path ONLY when button pressed
+  // Calculate path ONLY when button pressed
   const btnPath = button("Calculate Path", async () => {
     if (!state.map || !state.start || !state.end) {
       alert("Place Rover and Place X first.");
@@ -85,7 +85,7 @@ export function createPlacementControls(opts: {
   state.start,
   state.end,
   biomeCosts,
-  allowWater // ✅ pass the toggle state
+  allowWater 
 );
 
       const path: [number, number][] = Array.isArray(res?.path) ? res.path : [];
@@ -101,7 +101,7 @@ export function createPlacementControls(opts: {
         return;
       }
 
-      // ✅ Extra enforcement: if water not allowed but path touches water => show error
+    
       if (!allowWater) {
         const touchesWater = path.some(([x, y]) => state.map!.biomes[y][x] === 0);
         if (touchesWater) {
@@ -127,14 +127,12 @@ export function createPlacementControls(opts: {
   left.appendChild(btnClear);
   left.appendChild(btnPath);
 
-  // biome sliders + water toggle
   createBiomeControls(right);
 
   bar.appendChild(left);
   bar.appendChild(right);
   document.body.appendChild(bar);
 
-  // default: no placement mode
   setActive(null);
   return bar;
 }

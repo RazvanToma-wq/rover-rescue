@@ -11,7 +11,6 @@ export const biomeCosts: Record<number, number> = {
 };
 
 export function createBiomeControls(container: HTMLElement) {
-  // --- Water toggle ---
   const waterWrapper = document.createElement("div");
   waterWrapper.style.display = "flex";
   waterWrapper.style.alignItems = "center";
@@ -33,7 +32,7 @@ export function createBiomeControls(container: HTMLElement) {
   waterWrapper.appendChild(waterLabel);
   container.appendChild(waterWrapper);
 
-  // --- Sliders ---
+  // Sliders
   const entries: [string, number, number, number][] = [
     ["Sand", 1, 1, 10],
     ["Grass", 2, 1, 10],
