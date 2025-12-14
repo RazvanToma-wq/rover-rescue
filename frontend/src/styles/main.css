@@ -1,0 +1,38 @@
+html, body {
+  margin: 0;
+  padding: 0;
+  background: black;
+  overflow: hidden;
+  font-family: system-ui, sans-serif;
+}
+
+#top-ui {
+  position: fixed;
+  top: 12px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 16px;
+  padding: 10px 16px;
+  background: rgba(0, 0, 0, 0.85);
+  border-radius: 10px;
+  z-index: 10;
+}
+
+#loading {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: black;
+  color: white;
+  font-size: 18px;
+  z-index: 20;
+}
+
+/* --- FIX: allow JS to hide the loading overlay --- */
+#loading[hidden] {
+  display: none !important;
+}
+
